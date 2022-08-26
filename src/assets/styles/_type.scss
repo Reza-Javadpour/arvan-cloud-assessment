@@ -4,13 +4,14 @@ html {
   direction: ltr;
   min-height: 100vh;
   max-height: 100vh;
+  color: $primary-text-color;
   font-size: $default-font-size;
   font-family: Avenir, Helvetica, Arial, sans-serif;
 }
 
 * {
   outline: none;
-  color: $primary-text-color;
+  color: inherit;
 }
 
 ::-moz-selection {
@@ -34,11 +35,6 @@ a {
   &:link,
   &:visited {
     color: inherit;
-  }
-
-  &:hover,
-  &:active {
-    color: $primary-color;
   }
 }
 
