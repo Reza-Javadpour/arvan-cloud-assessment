@@ -7,6 +7,9 @@ export const HTTP = axios.create({
 
 export default {
   getArticles() {
-    return HTTP.get(`articles`)
+    return HTTP.get(`articles`);
+  },
+  getTags() {
+    return HTTP.get(`tags`);
   },
 }
