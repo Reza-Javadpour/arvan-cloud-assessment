@@ -1,0 +1,52 @@
+@import "variables";
+
+html {
+  direction: ltr;
+  min-height: 100vh;
+  max-height: 100vh;
+  font-size: $default-font-size;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+}
+
+* {
+  outline: none;
+  color: $primary-text-color;
+}
+
+::-moz-selection {
+  color: $secondary-text-color;
+  background: $primary-color;
+}
+
+::selection {
+  color: $secondary-text-color;
+  background: $primary-color;
+}
+
+body {
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s;
+
+  &:link,
+  &:visited {
+    color: inherit;
+  }
+
+  &:hover,
+  &:active {
+    color: $primary-color;
+  }
+}
+
+p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+span, div {
+  cursor: default;
+}
