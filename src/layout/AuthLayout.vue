@@ -5,8 +5,16 @@
 </template>
 
 <script>
+
+import { isLoggedIn } from '../core/auth.js';
+
 export default {
-  name: 'AuthLayout'
+  name: 'AuthLayout',
+  beforeMount () {
+    if (isLoggedIn()) {
+      this.$router.push('/articles')
+    }
+  }
 };
 </script>
 

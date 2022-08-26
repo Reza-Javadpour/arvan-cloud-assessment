@@ -1,18 +1,33 @@
 <template>
   <div class="register-page">
-    <AuthBox boxType="register">
+    <AuthBox boxType="register" @submit="submitForm()" :isLoading="isLoading">
       <form>
         <div class="form-group">
           <label for="InputUser">User</label>
-          <input type="text" class="form-control" id="InputUser">
+          <input
+            type="text"
+            class="form-control"
+            id="InputUser"
+            v-model="username"
+            :disabled="isLoading">
         </div>
         <div class="form-group">
           <label for="InputEmail">Email</label>
-          <input type="text" class="form-control" id="InputEmail">
+          <input
+            type="text"
+            class="form-control"
+            id="InputEmail"
+            v-model="email"
+            :disabled="isLoading">
         </div>
         <div class="form-group">
           <label for="InputPassword">Password</label>
-          <input type="password" class="form-control" id="InputPassword">
+          <input
+            type="password"
+            class="form-control"
+            id="InputPassword"
+            v-model="password"
+            :disabled="isLoading">
         </div>
       </form>
     </AuthBox>
@@ -21,10 +36,45 @@
 
 <script>
 import AuthBox from './components/AuthBox.vue';
+import { isEmail } from '../../core/utils.js';
+import authServices from '../../core/services/auth-services.js';
+import { setAuthInfo } from '../../core/storage.js';
 
 export default {
   name: 'Register',
   components: {AuthBox},
+  data() {
+    return {
+      username: '',
+      email: '',
+      password: '',
+      isLoading: false,
+    }
+  },
+  methods: {
+    submitForm() {
+      if (
+          !this.isLoading &&
+          this.username.length >= 6 &&
+          this.email && isEmail(this.email) &&
+          this.password.length >= 8
+      ) {
+        this.isLoading = true;
+        authServices.doRegister({
+          username: this.username,
+          email: this.email,
+          password: this.password
+        }).then(response => {
+          if (response?.data?.user) {
+            setAuthInfo(response.data.user);
+            window.location.reload();
+          }
+        }, () => {
+          this.isLoading = false;
+        })
+      }
+    }
+  }
 };
 </script>
 

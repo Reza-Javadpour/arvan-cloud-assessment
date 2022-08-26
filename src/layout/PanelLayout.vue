@@ -2,8 +2,12 @@
   <div class="panel-layout">
     <nav class="navbar navbar-dark sticky-top pl-3 bg-dark shadow">
       <router-link class="navbar-brand ml-3 pl-5 pl-md-0" to="/">Arvan Challenge</router-link>
-      <div class="greeting-text ml-4 d-none d-sm-block">Welcome [username]</div>
-      <button type="button" class="btn btn-outline-info d-none d-sm-block">Logout</button>
+      <div class="greeting-text ml-4 d-none d-sm-block">{{`Welcome ${username}`}}</div>
+      <button
+          type="button"
+          class="btn btn-outline-info d-none d-sm-block"
+          @click="handleLogout()"
+      >Logout</button>
       <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse"
               data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
               aria-label="Toggle navigation">
@@ -30,7 +34,11 @@
                 </router-link>
               </li>
             </ul>
-            <button type="button" class="btn btn-primary btn-block d-sm-none mt-4 mb-4">Logout</button>
+            <button
+                type="button"
+                class="btn btn-primary btn-block d-sm-none mt-4 mb-4"
+                @click="handleLogout()"
+            >Logout</button>
           </div>
         </nav>
 
@@ -43,8 +51,26 @@
 </template>
 
 <script>
+import { getUsername } from '../core/storage.js';
+import { doLogout, isLoggedIn } from '../core/auth.js';
+
 export default {
   name: 'PanelLayout',
+  data() {
+    return {
+      username: getUsername() || '',
+    }
+  },
+  beforeMount () {
+    if (!isLoggedIn()) {
+      this.$router.push('/auth/login');
+    }
+  },
+  methods: {
+    handleLogout() {
+      doLogout();
+    }
+  }
 };
 </script>
 

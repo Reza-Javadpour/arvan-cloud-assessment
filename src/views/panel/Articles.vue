@@ -22,7 +22,7 @@
 
 <script>
 import { articlesMockResponse } from '../../core/mock-data.js';
-import { transformArticles } from '../../core/transformers/articles.js';
+import { transformArticles } from '../../core/transforms/articles.js';
 
 export default {
   name: 'Home',

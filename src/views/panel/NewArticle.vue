@@ -54,7 +54,7 @@
 
 <script>
 import { tagsResponse } from '../../core/mock-data.js';
-import { transformTags } from '../../core/transformers/tags.js';
+import { transformTags } from '../../core/transforms/tags.js';
 
 export default {
   name: 'NewArticle',

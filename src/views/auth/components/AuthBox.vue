@@ -1,13 +1,16 @@
 <template>
-  <div class="auth-box">
+  <div :class="{'auth-box': true, 'disabled': isLoading}">
     <h1>{{ types[boxType].title }}</h1>
     <div class="form-items">
       <slot></slot>
     </div>
     <button
-        type="submit"
-        class="action-button btn btn-primary btn-block">
-      {{ types[boxType].actionTitle }}
+        class="action-button btn btn-primary btn-block"
+        @click="this.$emit('submit')"
+        :disabled="isLoading"
+    >
+      <Spinner v-if="isLoading" color="white" size="20px"/>
+      <span v-else>{{ types[boxType].actionTitle }}</span>
     </button>
     <div class="footer">
       <div class="footer-desc">{{ types[boxType].footerDesc }}</div>
@@ -21,12 +24,15 @@
 </template>
 
 <script>
+import Spinner from '../../../components/Spinner.vue';
+
 export default {
   /**
    * AuthBox Component
    * @property {'login' | 'register'} boxType render dynamically based on box type
    */
   name: 'AuthBox',
+  components: {Spinner},
   data() {
     return {
       types: {
@@ -51,6 +57,10 @@ export default {
     boxType: {
       required: true,
       type: String
+    },
+    isLoading: {
+      default: false,
+      type: Boolean
     }
   },
 };
@@ -61,12 +71,16 @@ export default {
     width: 100%;
     display: flex;
     max-width: 450px;
+    transition: 0.3s;
     border-radius: 4px;
     align-items: center;
+    padding: 0 20px 19px;
     flex-direction: column;
-    padding: 0px 20px 19px;
     justify-content: center;
     background-color: #eceeef;
+    &.disabled {
+      opacity: 0.5;
+    }
     > h1 {
       color: #707070;
       margin-top: 37px;
@@ -79,7 +93,11 @@ export default {
       width: 100%;
     }
     > .action-button {
+      height: 40px;
+      display: flex;
       margin-top: 28px;
+      align-items: center;
+      justify-content: center;
     }
     > .footer {
       width: 100%;

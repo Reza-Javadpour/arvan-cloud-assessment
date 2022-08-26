@@ -6,7 +6,8 @@ export function transformArticles(items) {
       index: index + 1,
       author: item.author.username,
       tags: item.tagList.join(', '),
-      excerpt: item.body.length > 20 ? (item.body.split(' ').slice(0, 19).join(' ') + '...') : item.body,
+      excerpt: (item.body && item.body.split(' ').length > 20) ?
+        (item.body.split(' ').slice(0, 19).join(' ') + '...') : item.body,
       created: moment(item.createdAt).format('MMMM DD ,YYYY')
     }
   });
