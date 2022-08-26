@@ -46,3 +46,13 @@ p {
 span, div {
   cursor: default;
 }
+
+table{
+  th {
+    background-color: #eceeef;
+    text-transform: capitalize;
+  }
+  th, td {
+    vertical-align: middle !important;
+  }
+}
