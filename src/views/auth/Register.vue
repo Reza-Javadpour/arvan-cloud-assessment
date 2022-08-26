@@ -1,7 +1,11 @@
 <template>
-  <div class="login-page">
-    <AuthBox boxType="login">
+  <div class="register-page">
+    <AuthBox boxType="register">
       <form>
+        <div class="form-group">
+          <label for="InputUser">User</label>
+          <input type="text" class="form-control" id="InputUser">
+        </div>
         <div class="form-group">
           <label for="InputEmail">Email</label>
           <input type="text" class="form-control" id="InputEmail">
@@ -19,13 +23,13 @@
 import AuthBox from './components/AuthBox.vue';
 
 export default {
-  name: 'Login',
+  name: 'Register',
   components: {AuthBox},
 };
 </script>
 
 <style lang="scss" scoped>
-  .login-page {
+  .register-page {
     width: 100%;
     display: flex;
     align-items: center;
