@@ -6,17 +6,17 @@ import { doLogout } from '../auth.js';
 axios.defaults.baseURL = API_URL;
 axios.defaults.timeout = API_TIMEOUT;
 
-axios.interceptors.request.use(config => {
+axios.interceptors.request.use((config) => {
   const token = getToken();
   config.headers.authorization = token ? `Token ${token}` : '';
   return config;
 });
 
-axios.interceptors.response.use(undefined, onReject => {
+axios.interceptors.response.use(undefined, (onReject) => {
   if (onReject.response.status === 401) {
     doLogout();
   }
   return onReject.response;
-})
+});
 
 export default axios;

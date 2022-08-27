@@ -12,12 +12,12 @@ export default {
     }
   },
   createArticle(body) {
-    return axios.post(`articles`, {article: body});
+    return axios.post(`articles`, { article: body });
   },
   editArticle(body, slug) {
-    return axios.put(`articles/${slug}`, {article: body});
+    return axios.put(`articles/${slug}`, { article: body });
   },
   getTags() {
     return axios.get(`tags`);
   },
-}
+};

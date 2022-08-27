@@ -1,15 +1,15 @@
 const AUTH_KEY = 'auth';
 
 export function setAuthInfo(authInfo) {
-  window.localStorage.setItem(AUTH_KEY, JSON.stringify(authInfo))
+  window.localStorage.setItem(AUTH_KEY, JSON.stringify(authInfo));
 }
 
 export function getAuthInfo() {
-  const authData = window.localStorage.getItem(AUTH_KEY)
+  const authData = window.localStorage.getItem(AUTH_KEY);
   if (!authData) {
-    return false
+    return false;
   }
-  return JSON.parse(authData)
+  return JSON.parse(authData);
 }
 
 export function isLoggedIn() {
@@ -17,7 +17,7 @@ export function isLoggedIn() {
 }
 
 export function getUsername() {
-  let authData =  window.localStorage.getItem(AUTH_KEY);
+  let authData = window.localStorage.getItem(AUTH_KEY);
   if (authData) {
     authData = JSON.parse(authData);
     return authData.username || '';
@@ -25,7 +25,7 @@ export function getUsername() {
 }
 
 export function getToken() {
-  let authData =  window.localStorage.getItem(AUTH_KEY);
+  let authData = window.localStorage.getItem(AUTH_KEY);
   if (authData) {
     authData = JSON.parse(authData);
     return authData.token || '';

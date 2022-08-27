@@ -5,24 +5,23 @@
 </template>
 
 <script>
-
 import { isLoggedIn } from '../core/auth.js';
 
 export default {
   name: 'AuthLayout',
-  beforeMount () {
+  beforeMount() {
     if (isLoggedIn()) {
-      this.$router.push('/articles')
+      this.$router.push('/articles');
     }
-  }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-  .auth-layout {
-    display: flex;
-    min-height: 100vh;
-    align-items: center;
-    justify-content: center;
-  }
+.auth-layout {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
 </style>
