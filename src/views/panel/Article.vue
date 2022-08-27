@@ -1,9 +1,18 @@
 <template>
-  <h1>New Articles</h1>
+  <h1>{{ `${slug ? 'Edit' : 'New'} Articles` }}</h1>
   <div class="container-fluid new-article-page">
     <div class="row">
       <div class="col-9">
-        <form>
+        <RequestHandler
+            v-if="slug && (!article)"
+            size="small"
+            spinnerSize="30px"
+            containerHeight="50vh"
+            @actionClick="fetchArticle()"
+            :isLoading="isLoading"
+            :tagsHasError="hasError || article === null"
+        ></RequestHandler>
+        <form v-else>
           <div class="form-group">
             <label for="InputTitle">Title</label>
             <input type="text" class="form-control" id="InputTitle" placeholder="Title" v-model="formTitle" required>
@@ -18,10 +27,10 @@
           </div>
           <button
             class="submit-button btn btn-primary"
-            @click="submitNewArticle()"
-            :disabled="createArticleIsLoading"
+            @click="submitArticle()"
+            :disabled="isLoading"
           >
-            <Spinner v-if="createArticleIsLoading" color="white" size="20px"/>
+            <Spinner v-if="isLoading" color="white" size="20px"/>
             <span v-else>Submit</span>
           </button>
         </form>
@@ -82,60 +91,114 @@ export default {
   components: {RequestHandler, Spinner},
   data() {
     return {
+      slug: null,
+      article: null,
       formTitle: '',
       formDescription: '',
       formBody: '',
       newTagValue: '',
       tagsList: null,
-      createArticleIsLoading: false,
+      isLoading: false,
+      hasError: false,
       tagsIsLoading: false,
       tagsHasError: false,
     }
   },
   mounted () {
-    this.fetchTags();
+    if (this.$route.params?.slug) {
+      this.slug = this.$route.params.slug;
+      this.fetchArticle();
+    } else {
+      this.fetchTags();
+    }
   },
   computed: {
     sortedTagsList() {
       if (!this.tagsList) return null;
       return this.tagsList.sort((a, b) => {
-        if (a.title < b.title) {return -1}
-        if (a.title > b.title) {return 1}
+        if (a.title < b.title) {return -1};
+        if (a.title > b.title) {return 1};
         return 0;
       });
     }
   },
+  watch: {
+    $route ( to, from ) {
+      if (from.name === 'EditArticle' && to.name === 'NewArticle') {
+        this.resetData();
+        this.fetchTags();
+      }
+    }
+  },
   methods: {
-    fetchTags() {
+    fetchArticle() {
+      this.isLoading = true;
+      this.tagsIsLoading = true;
+      this.hasError = false;
+      articlesServices.getArticleBySlug(this.slug).then((response) => {
+        this.article = response.data.article;
+        this.formTitle = this.article.title;
+        this.formDescription = this.article.description;
+        this.formBody = this.article.body;
+        this.isLoading = false;
+        this.fetchTags(this.article.tagList);
+      }, () => {
+        this.hasError = true;
+        this.isLoading = false;
+        this.tagsIsLoading = false;
+      })
+    },
+    fetchTags(checkedItems = []) {
       this.tagsIsLoading = true;
       this.tagsHasError = false;
       articlesServices.getTags().then((response) => {
-        this.tagsList = transformTags(response.data.tags)
+        this.tagsList = transformTags(response.data.tags, checkedItems)
         this.tagsIsLoading = false;
       }, () => {
         this.tagsHasError = true;
         this.tagsIsLoading = false;
       })
     },
-    submitNewArticle() {
+    submitArticle() {
       if (
-          !this.createArticleIsLoading &&
+          !this.isLoading &&
           this.formTitle && this.formDescription && this.formBody
       ) {
-        this.createArticleIsLoading = true;
-        const checkedTags = this.sortedTagsList.filter(item => item.checked).map(item => item.title);
-        articlesServices.createArticle({
-          title: this.formTitle,
-          description: this.formDescription,
-          body: this.formBody,
-          tagList: [...checkedTags]
-        }).then(() => {
-          this.createArticleIsLoading = false;
-          this.$router.push('/articles');
-        }, () => {
-          this.createArticleIsLoading = false;
-        })
+        if (this.slug) {
+          this.editArticle();
+        } else {
+          this.createArticle();
+        }
       }
+    },
+    editArticle() {
+      this.isLoading = true;
+      const checkedTags = this.sortedTagsList.filter(item => item.checked).map(item => item.title);
+      articlesServices.editArticle({
+        title: this.formTitle,
+        description: this.formDescription,
+        body: this.formBody,
+        tagList: [...checkedTags]
+      }, this.slug).then(() => {
+        this.isLoading = false;
+      }, () => {
+        this.isLoading = false;
+      })
+    },
+    createArticle() {
+      this.isLoading = true;
+      const checkedTags = this.sortedTagsList.filter(item => item.checked).map(item => item.title);
+      articlesServices.createArticle({
+        title: this.formTitle,
+        description: this.formDescription,
+        body: this.formBody,
+        tagList: [...checkedTags]
+      }).then(() => {
+        this.isLoading = false;
+        this.$router.push('/articles');
+      }, () => {
+        this.isLoading = false;
+      })
     },
     addNewTag() {
       if (this.newTagValue && !this.tagsList.find(item => item.title === this.newTagValue)) {
@@ -148,7 +211,18 @@ export default {
         ];
         this.newTagValue = '';
       }
-    }
+    },
+    resetData() {
+      this.slug =null;
+      this.article =null;
+      this.formTitle ='';
+      this.formDescription ='';
+      this.formBody ='';
+      this.newTagValue ='';
+      this.tagsList =null;
+      this.hasError =false;
+      this.tagsHasError =false;
+    },
   }
 };
 </script>

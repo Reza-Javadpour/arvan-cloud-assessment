@@ -13,13 +13,25 @@
       <tr>
         <th scope="col">#</th>
         <th v-for="col in columns" scope="col">{{ col }}</th>
+        <th/>
       </tr>
       </thead>
       <tbody>
       <tr v-for="(row, rowIndex) in articles" :key="`table-${rowIndex}`">
-        <td scope="row">{{rowIndex}}</td>
+        <td scope="row">{{row.index}}</td>
         <td v-for="(col, colIndex) in columns" :key="`table-${rowIndex}-${colIndex}`">
             {{ row[ col ] }}
+        </td>
+        <td>
+          <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              ...
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <router-link :to="`article/edit/${row.slug}`" class="dropdown-item">Edit</router-link>
+              <div class="dropdown-item">Delete</div>
+            </div>
+          </div>
         </td>
       </tr>
       </tbody>

@@ -4,6 +4,7 @@ export function transformArticles(items) {
   return items.map((item, index) => {
     return {
       index: index + 1,
+      slug: item.slug,
       author: item.author.username,
       tags: item.tagList.join(', '),
       excerpt: (item.body && item.body.split(' ').length > 20) ?

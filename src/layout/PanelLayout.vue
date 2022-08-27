@@ -29,7 +29,7 @@
                 </router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link pl-5" to="/articles/new">
+                <router-link class="nav-link pl-5" to="/article/new">
                   New Article
                 </router-link>
               </li>

@@ -1,8 +1,8 @@
-export function transformTags(tags) {
+export function transformTags(tags, checkedItems = []) {
   return tags.map(tag => {
     return {
       title: tag,
-      checked: false
+      checked: !!checkedItems.find(item => item === tag)
     }
   })
 }
