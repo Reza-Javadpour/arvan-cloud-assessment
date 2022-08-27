@@ -1,7 +1,17 @@
 <template>
-  <div class="login-page">
-    <AuthBox box-type="login" :is-loading="isLoading" @submit="submitForm()">
+  <div class="register-page">
+    <AuthBox box-type="register" :is-loading="isLoading" @submit="submitForm()">
       <form>
+        <div class="form-group">
+          <label for="InputUser">User</label>
+          <input
+            id="InputUser"
+            v-model="username"
+            type="text"
+            class="form-control"
+            :disabled="isLoading"
+          />
+        </div>
         <div class="form-group">
           <label for="InputEmail">Email</label>
           <input
@@ -29,15 +39,16 @@
 
 <script>
 import AuthBox from './components/AuthBox.vue';
-import authServices from '../../core/api/auth-services.js';
 import { isEmail } from '../../core/utils.js';
+import authServices from '../../core/api/auth-services.js';
 import { setAuthInfo } from '../../core/storage.js';
 
 export default {
-  name: 'Login',
+  name: 'RegisterPage',
   components: { AuthBox },
   data() {
     return {
+      username: '',
       email: '',
       password: '',
       isLoading: false,
@@ -47,13 +58,15 @@ export default {
     submitForm() {
       if (
         !this.isLoading &&
+        this.username.length >= 6 &&
         this.email &&
         isEmail(this.email) &&
         this.password.length >= 8
       ) {
         this.isLoading = true;
         authServices
-          .doLogin({
+          .doRegister({
+            username: this.username,
             email: this.email,
             password: this.password,
           })
@@ -75,7 +88,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.login-page {
+.register-page {
   width: 100%;
   display: flex;
   align-items: center;

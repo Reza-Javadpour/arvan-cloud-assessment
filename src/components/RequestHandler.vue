@@ -31,19 +31,21 @@
 
 <script>
 import Spinner from './Spinner.vue';
+
 export default {
   name: 'RequestHandler',
   components: { Spinner },
   props: {
-    errorDesc: { default: 'Server connection problem!' },
-    actionTitle: { default: 'Try again' },
-    size: { default: 'normal' },
-    containerHeight: { default: 'unset' },
-    hasBorder: { default: true },
-    isLoading: { default: false },
-    hasError: { default: false },
-    spinnerSize: { default: '40px' },
+    errorDesc: { default: 'Server connection problem!', type: String },
+    actionTitle: { default: 'Try again', type: String },
+    size: { default: 'normal', type: String },
+    containerHeight: { default: 'unset', type: String },
+    hasBorder: { default: true, type: Boolean },
+    isLoading: { default: false, type: Boolean },
+    hasError: { default: false, type: Boolean },
+    spinnerSize: { default: '40px', type: String },
   },
+  emits: ['actionClick'],
 };
 </script>
 
@@ -55,9 +57,7 @@ export default {
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  > .content {
-    color: #fff;
-  }
+
   > .description {
     opacity: 0.7;
     font-size: 1.5rem;

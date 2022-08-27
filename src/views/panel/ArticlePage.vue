@@ -1,8 +1,9 @@
+<!--TODO: This could be converted to smaller components-->
 <template>
   <h1>{{ `${slug ? 'Edit' : 'New'} Articles` }}</h1>
   <div class="container-fluid new-article-page">
-    <div class="row">
-      <div class="col-9">
+    <div class="row d-flex flex-sm-column-reverse flex-md-row">
+      <div class="col-sm-12 col-md-7 col-lg-9">
         <RequestHandler
           v-if="slug && !article"
           size="small"
@@ -10,7 +11,7 @@
           container-height="50vh"
           :is-loading="isLoading"
           :tags-has-error="hasError || article === null"
-          @actionClick="fetchArticle()"
+          @action-click="fetchArticle()"
         ></RequestHandler>
         <form v-else>
           <div class="form-group">
@@ -47,16 +48,16 @@
             ></textarea>
           </div>
           <button
-            class="submit-button btn btn-primary"
+            class="submit-button btn btn-primary col-lg-2 col-md-4 col-sm-12"
             :disabled="isLoading"
             @click="submitArticle()"
           >
             <Spinner v-if="isLoading" color="white" size="20px" />
-            <span v-else>Submit</span>
+            <span v-else>{{ slug ? 'Update' : 'Submit' }}</span>
           </button>
         </form>
       </div>
-      <div class="col-3">
+      <div class="col-sm-12 col-md-5 col-lg-3 mb-3">
         <RequestHandler
           v-if="!sortedTagsList || !sortedTagsList.length"
           size="small"
@@ -64,7 +65,7 @@
           container-height="50vh"
           :is-loading="tagsIsLoading"
           :tags-has-error="tagsHasError || sortedTagsList === null"
-          @actionClick="fetchTags()"
+          @action-click="fetchTags()"
         ></RequestHandler>
         <div v-else>
           <div class="form-group">
@@ -115,7 +116,7 @@ import articlesServices from '../../core/api/articles-services.js';
 import Spinner from '../../components/Spinner.vue';
 
 export default {
-  name: 'NewArticle',
+  name: 'ArticlePage',
   components: { RequestHandler, Spinner },
   data() {
     return {
@@ -155,8 +156,8 @@ export default {
     },
   },
   mounted() {
-    if (this.$route.params?.slug) {
-      this.slug = this.$route.params.slug;
+    if (this.$route['params']?.slug) {
+      this.slug = this.$route['params'].slug;
       this.fetchArticle();
     } else {
       this.fetchTags();
@@ -229,9 +230,11 @@ export default {
         .then(
           () => {
             this.isLoading = false;
+            // TODO: Add success toast here
           },
           () => {
             this.isLoading = false;
+            // TODO: Add error toast here
           },
         );
     },
@@ -251,9 +254,11 @@ export default {
           () => {
             this.isLoading = false;
             this.$router.push('/articles');
+            // TODO: Add success toast here
           },
           () => {
             this.isLoading = false;
+            // TODO: Add error toast here
           },
         );
     },
@@ -291,7 +296,6 @@ export default {
 @import './src/assets/styles/variables';
 .new-article-page {
   .submit-button {
-    width: 99px;
     height: 40px;
     display: flex;
     margin-top: 28px;

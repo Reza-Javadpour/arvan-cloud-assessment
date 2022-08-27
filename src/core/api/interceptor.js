@@ -16,6 +16,7 @@ axios.interceptors.response.use(undefined, (onReject) => {
   if (onReject.response.status === 401) {
     doLogout();
   }
+  // TODO: Handle other http status codes
   return onReject.response;
 });
 

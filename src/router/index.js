@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import AuthLayout from '../layout/AuthLayout.vue';
 import PanelLayout from '../layout/PanelLayout.vue';
-import Login from '../views/auth/Login.vue';
-import Register from '../views/auth/Register.vue';
-import Articles from '../views/panel/Articles.vue';
-import Article from '../views/panel/Article.vue';
+import Login from '../views/auth/LoginPage.vue';
+import Register from '../views/auth/RegisterPage.vue';
+import ArticlesPage from '../views/panel/ArticlesPage.vue';
+import ArticlePage from '../views/panel/ArticlePage.vue';
 
 const routes = [
   { path: '/', redirect: '/articles' },
@@ -23,19 +23,19 @@ const routes = [
   {
     path: '/articles',
     name: 'Articles',
-    component: Articles,
+    component: ArticlesPage,
     meta: { layout: PanelLayout },
   },
   {
     path: '/article/new',
     name: 'NewArticle',
-    component: Article,
+    component: ArticlePage,
     meta: { layout: PanelLayout },
   },
   {
     path: '/article/edit/:slug',
     name: 'EditArticle',
-    component: Article,
+    component: ArticlePage,
     meta: { layout: PanelLayout },
   },
 ];

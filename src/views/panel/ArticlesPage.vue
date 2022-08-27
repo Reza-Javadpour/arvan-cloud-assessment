@@ -4,21 +4,23 @@
     container-height="90vh"
     :is-loading="isLoading"
     :has-error="hasError || articles === null"
-    @actionClick="fetchArticles()"
+    @action-click="fetchArticles()"
   ></RequestHandler>
-  <div v-else class="articles-page">
+  <div v-else>
     <h1>All Posts</h1>
     <table class="table">
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th v-for="col in columns" scope="col">{{ col }}</th>
+          <th v-for="(col, colIndex) in columns" :key="colIndex" scope="col">
+            {{ col }}
+          </th>
           <th />
         </tr>
       </thead>
       <tbody>
         <tr v-for="(row, rowIndex) in articles" :key="`table-${rowIndex}`">
-          <td scope="row">{{ row.index }}</td>
+          <td>{{ row.index }}</td>
           <td
             v-for="(col, colIndex) in columns"
             :key="`table-${rowIndex}-${colIndex}`"
@@ -55,6 +57,7 @@
         </tr>
       </tbody>
     </table>
+    <!--TODO: Add pagination for articles-->
   </div>
 </template>
 
@@ -64,7 +67,7 @@ import articlesServices from '../../core/api/articles-services.js';
 import RequestHandler from '../../components/RequestHandler.vue';
 
 export default {
-  name: 'Home',
+  name: 'ArticlesPage',
   components: { RequestHandler },
   data() {
     return {
@@ -94,16 +97,13 @@ export default {
       );
     },
     handleRemoveArticle(slug) {
+      // TODO: Using confirm modal instead of deleting immediately
       articlesServices.removeArticle(slug).then(() => {
         this.articles = null;
         this.fetchArticles();
+        // TODO: Add success toast here
       });
     },
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.articles-page {
-}
-</style>

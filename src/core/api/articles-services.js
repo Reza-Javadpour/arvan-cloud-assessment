@@ -15,7 +15,7 @@ export default {
     return axios.post(`articles`, { article: body });
   },
   editArticle(body, slug) {
-    return axios.put(`articles/${slug}`, { article: body });
+    return axios.put(`articles/${slug}`, { article: body || {} });
   },
   removeArticle(slug) {
     return axios.delete(`articles/${slug}`);

@@ -41,6 +41,7 @@ export default {
       type: Boolean,
     },
   },
+  emits: ['submit'],
   data() {
     return {
       types: {
