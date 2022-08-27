@@ -17,6 +17,9 @@ export default {
   editArticle(body, slug) {
     return axios.put(`articles/${slug}`, { article: body });
   },
+  removeArticle(slug) {
+    return axios.delete(`articles/${slug}`);
+  },
   getTags() {
     return axios.get(`tags`);
   },

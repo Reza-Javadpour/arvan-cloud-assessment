@@ -43,7 +43,12 @@
                   class="dropdown-item"
                   >Edit</router-link
                 >
-                <div class="dropdown-item">Delete</div>
+                <div
+                  class="dropdown-item"
+                  @click="handleRemoveArticle(row.slug)"
+                >
+                  Delete
+                </div>
               </div>
             </div>
           </td>
@@ -87,6 +92,12 @@ export default {
           this.isLoading = false;
         },
       );
+    },
+    handleRemoveArticle(slug) {
+      articlesServices.removeArticle(slug).then(() => {
+        this.articles = null;
+        this.fetchArticles();
+      });
     },
   },
 };
