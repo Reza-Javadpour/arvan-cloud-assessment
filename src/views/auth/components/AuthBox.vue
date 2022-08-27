@@ -103,9 +103,6 @@ export default {
       width: 100%;
       display: flex;
       margin-top: 15px;
-      .footer-desc {
-
-      }
       .footer-action {
         font-weight: 700;
         margin-left: 11px;

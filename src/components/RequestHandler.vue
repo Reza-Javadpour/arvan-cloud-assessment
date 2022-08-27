@@ -48,6 +48,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  @import "./src/assets/styles/variables";
   .handler-wrapper {
     width: 100%;
     display: flex;
@@ -62,7 +63,7 @@ export default {
       font-size: 1.5rem;
     }
     > .action {
-      color: #610ce9;
+      color: $primary-color;
       margin-top: 30px;
     }
 
@@ -75,9 +76,9 @@ export default {
       }
     }
     &.has-border {
-      border-radius: 28px;
+      border-radius: 8px;
       justify-content: center;
-      border: dashed 1px #7124ff99;
+      border: dashed 1px $primary-color;
     }
   }
 </style>

@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { API_TIMEOUT, API_URL } from './config.js';
 
 export const HTTP = axios.create({
-  baseURL: 'https://conduit.productionready.io/api/',
-  timeout: 10000,
+  baseURL: API_URL,
+  timeout: API_TIMEOUT,
 })
 
 export default {

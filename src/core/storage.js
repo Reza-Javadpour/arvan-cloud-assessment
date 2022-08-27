@@ -24,6 +24,14 @@ export function getUsername() {
   }
 }
 
+export function getToken() {
+  let authData =  window.localStorage.getItem(AUTH_KEY);
+  if (authData) {
+    authData = JSON.parse(authData);
+    return authData.token || '';
+  }
+}
+
 export function clearAuthData() {
   window.localStorage.removeItem(AUTH_KEY);
 }

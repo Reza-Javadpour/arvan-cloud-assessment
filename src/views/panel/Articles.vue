@@ -29,7 +29,7 @@
 
 <script>
 import { transformArticles } from '../../core/transforms/articles.js';
-import articlesServices from '../../core/services/articles-services.js';
+import articlesServices from '../../core/api/articles-services.js';
 import RequestHandler from '../../components/RequestHandler.vue';
 
 export default {

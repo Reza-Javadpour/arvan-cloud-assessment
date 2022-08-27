@@ -27,7 +27,7 @@
 
 <script>
 import AuthBox from './components/AuthBox.vue';
-import authServices from '../../core/services/auth-services.js';
+import authServices from '../../core/api/auth-services.js';
 import { isEmail } from '../../core/utils.js';
 import { setAuthInfo } from '../../core/storage.js';
 

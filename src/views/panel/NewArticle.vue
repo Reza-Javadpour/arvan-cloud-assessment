@@ -1,32 +1,40 @@
 <template>
   <h1>New Articles</h1>
-  <div class="container-fluid">
+  <div class="container-fluid new-article-page">
     <div class="row">
       <div class="col-9">
         <form>
           <div class="form-group">
             <label for="InputTitle">Title</label>
-            <input type="text" class="form-control" id="InputTitle" placeholder="Title">
+            <input type="text" class="form-control" id="InputTitle" placeholder="Title" v-model="formTitle" required>
           </div>
           <div class="form-group">
             <label for="InputDescription">Description</label>
-            <input type="text" class="form-control" id="InputDescription" placeholder="Description">
+            <input type="text" class="form-control" id="InputDescription" placeholder="Description" v-model="formDescription" required>
           </div>
           <div class="form-group">
             <label for="InputBody">Body</label>
-            <textarea type="text" class="form-control" id="InputBody" rows="8"></textarea>
+            <textarea type="text" class="form-control" id="InputBody" rows="8" v-model="formBody" required></textarea>
           </div>
-          <button type="submit" class="submit-button btn btn-primary">Submit</button>
+          <button
+            class="submit-button btn btn-primary"
+            @click="submitNewArticle()"
+            :disabled="createArticleIsLoading"
+          >
+            <Spinner v-if="createArticleIsLoading" color="white" size="20px"/>
+            <span v-else>Submit</span>
+          </button>
         </form>
       </div>
       <div class="col-3">
         <RequestHandler
             v-if="!sortedTagsList || !sortedTagsList.length"
             size="small"
+            spinnerSize="30px"
             containerHeight="50vh"
             @actionClick="fetchTags()"
-            :isLoading="isLoading"
-            :hasError="hasError || sortedTagsList === null"
+            :isLoading="tagsIsLoading"
+            :tagsHasError="tagsHasError || sortedTagsList === null"
         ></RequestHandler>
         <div v-else>
           <div class="form-group">
@@ -48,6 +56,7 @@
                     type="checkbox"
                     :value="tagItem.title"
                     :checked="tagItem.checked"
+                    v-model="tagItem.checked"
                     :id="`tag-item-${tagItem.title}`"
                 >
                 <label class="form-check-label" :for="`tag-item-${tagItem.title}`">
@@ -65,17 +74,22 @@
 <script>
 import { transformTags } from '../../core/transforms/tags.js';
 import RequestHandler from '../../components/RequestHandler.vue';
-import articlesServices from '../../core/services/articles-services.js';
+import articlesServices from '../../core/api/articles-services.js';
+import Spinner from '../../components/Spinner.vue';
 
 export default {
   name: 'NewArticle',
-  components: {RequestHandler},
+  components: {RequestHandler, Spinner},
   data() {
     return {
+      formTitle: '',
+      formDescription: '',
+      formBody: '',
       newTagValue: '',
       tagsList: null,
-      isLoading: false,
-      hasError: false,
+      createArticleIsLoading: false,
+      tagsIsLoading: false,
+      tagsHasError: false,
     }
   },
   mounted () {
@@ -93,15 +107,35 @@ export default {
   },
   methods: {
     fetchTags() {
-      this.isLoading = true;
-      this.hasError = false;
+      this.tagsIsLoading = true;
+      this.tagsHasError = false;
       articlesServices.getTags().then((response) => {
         this.tagsList = transformTags(response.data.tags)
-        this.isLoading = false;
+        this.tagsIsLoading = false;
       }, () => {
-        this.hasError = true;
-        this.isLoading = false;
+        this.tagsHasError = true;
+        this.tagsIsLoading = false;
       })
+    },
+    submitNewArticle() {
+      if (
+          !this.createArticleIsLoading &&
+          this.formTitle && this.formDescription && this.formBody
+      ) {
+        this.createArticleIsLoading = true;
+        const checkedTags = this.sortedTagsList.filter(item => item.checked).map(item => item.title);
+        articlesServices.createArticle({
+          title: this.formTitle,
+          description: this.formDescription,
+          body: this.formBody,
+          tagList: [...checkedTags]
+        }).then(() => {
+          this.createArticleIsLoading = false;
+          this.$router.push('/articles');
+        }, () => {
+          this.createArticleIsLoading = false;
+        })
+      }
     },
     addNewTag() {
       if (this.newTagValue && !this.tagsList.find(item => item.title === this.newTagValue)) {
@@ -123,5 +157,13 @@ export default {
 
 @import "./src/assets/styles/variables";
   .new-article-page {
+    .submit-button {
+      width: 99px;
+      height: 40px;
+      display: flex;
+      margin-top: 28px;
+      align-items: center;
+      justify-content: center;
+    }
   }
 </style>
