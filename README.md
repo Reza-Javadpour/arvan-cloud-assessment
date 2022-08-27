@@ -1,7 +1,45 @@
-# Vue 3 + Vite
+# Arvan Cloud Front-end Assessment
+This project was implemented using the [RealWorld](https://realworld.io) open API.
+## Technologies:
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+**Framework:** Vuejs `version 3.2.37` - [docs](https://vuejs.org)
 
-## Recommended IDE Setup
+**Build Tool:** Vite `version 3.0.7` - [docs](https://vitejs.dev/)
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+## Commands:
+
+**Install node packages:**
+```
+npm install
+```
+
+**Run project:**
+```
+npm run dev
+```
+
+**Build project:**
+```
+npm run build
+```
+
+## Files Structure:
+
+```
+├── public                    Public folder for place public files (favicon.ico & ...)  
+├── src                       Contains source codes
+│  ├── main.js                vue main file
+│  ├── app.vue                Vue.js app root file
+│  ├── assets                 Contains all assets that uses in the entire project
+│  │  └── styles              Contains all style sheets
+│  ├── components             Contains all UI components
+│  ├── core                   Contains utils, interceptor, APIs & ...
+│  ├── layout                 Contains project layouts & its partials
+│  ├── router                 Contains all vue routes
+│  └── views                  Contains all pages (Articles, NewArticle, EditArticle, ...)
+├── index.html                Main index file
+├── package.json              npm packages list
+├── README.md                 This Document that you are reading
+├── vite.config.js            Vite build tool configs
+├── vitest.config.js          Vitest config file
+```
